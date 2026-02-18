@@ -26,10 +26,15 @@ public class QuantityMeasurementApp {
         }
     }
 
+
+    public static boolean areFeetEqual(double value1, double value2) {
+        Feet f1 = new Feet(value1);
+        Feet f2 = new Feet(value2);
+        return f1.equals(f2);
+    }
+
     public static void main(String[] args) {
-        Feet f1=new Feet(1.0);
-        Feet f2=new Feet(1.0);
-        System.out.println(f1.equals(f2));
+        System.out.println("Feet Equal: " + areFeetEqual(1.0, 1.0));
     }
 
 }

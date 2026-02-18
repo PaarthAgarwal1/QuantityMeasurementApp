@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class QuantityMeasurementAppTest {
 
     @Test
-    void testEquality_SameValue() {
+    void testFeetEquality_SameValue() {
         QuantityMeasurementApp.Feet f1 =
                 new QuantityMeasurementApp.Feet(1.0);
         QuantityMeasurementApp.Feet f2 =
@@ -16,7 +16,7 @@ class QuantityMeasurementAppTest {
     }
 
     @Test
-    void testEquality_DifferentValue() {
+    void testFeetEquality_DifferentValue() {
         QuantityMeasurementApp.Feet f1 =
                 new QuantityMeasurementApp.Feet(1.0);
         QuantityMeasurementApp.Feet f2 =
@@ -26,7 +26,7 @@ class QuantityMeasurementAppTest {
     }
 
     @Test
-    void testEquality_NullComparison() {
+    void testFeetEquality_NullComparison() {
         QuantityMeasurementApp.Feet f1 =
                 new QuantityMeasurementApp.Feet(1.0);
 
@@ -34,7 +34,7 @@ class QuantityMeasurementAppTest {
     }
 
     @Test
-    void testEquality_SameReference() {
+    void testFeetEquality_SameReference() {
         QuantityMeasurementApp.Feet f1 =
                 new QuantityMeasurementApp.Feet(1.0);
 
@@ -42,7 +42,7 @@ class QuantityMeasurementAppTest {
     }
 
     @Test
-    void testEquality_NonNumericInput() {
+    void testFeetEquality_NonNumericInput() {
         QuantityMeasurementApp.Feet f1 =
                 new QuantityMeasurementApp.Feet(1.0);
 
