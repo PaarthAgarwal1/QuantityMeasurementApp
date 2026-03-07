@@ -24,16 +24,28 @@ public class QuantityMeasurementApp {
         double result=convert(value,from,to);
         System.out.println("convert(" + value + ", " + from + ", " + to + ") = " + result);
     }
+    public static void demonstrateAddition(double value1,Length.LengthUnit unit1,double value2,Length.LengthUnit unit2){
+        Length length1=new Length(value1,unit1);
+        Length length2=new Length(value2,unit2);
 
+        Length result=length1.add(length2);
+        System.out.println("add(" + length1 + ", " + length2 + ") = " + result);
+    }
     public static void main(String[] args) {
-        demonstrateLengthConversion(1.0, Length.LengthUnit.FEET, Length.LengthUnit.INCHES);
+        demonstrateAddition(1.0, Length.LengthUnit.FEET, 2.0, Length.LengthUnit.FEET);
 
-        demonstrateLengthConversion(3.0, Length.LengthUnit.YARDS, Length.LengthUnit.FEET);
+        demonstrateAddition(1.0, Length.LengthUnit.FEET, 12.0, Length.LengthUnit.INCHES);
 
-        demonstrateLengthConversion(36.0, Length.LengthUnit.INCHES, Length.LengthUnit.YARDS);
+        demonstrateAddition(12.0, Length.LengthUnit.INCHES, 1.0, Length.LengthUnit.FEET);
 
-        demonstrateLengthConversion(1.0, Length.LengthUnit.CENTIMETERS, Length.LengthUnit.INCHES);
+        demonstrateAddition(1.0, Length.LengthUnit.YARDS, 3.0, Length.LengthUnit.FEET);
 
-        demonstrateLengthConversion(0.0, Length.LengthUnit.FEET, Length.LengthUnit.INCHES);
+        demonstrateAddition(36.0, Length.LengthUnit.INCHES, 1.0, Length.LengthUnit.YARDS);
+
+        demonstrateAddition(2.54, Length.LengthUnit.CENTIMETERS, 1.0, Length.LengthUnit.INCHES);
+
+        demonstrateAddition(5.0, Length.LengthUnit.FEET, 0.0, Length.LengthUnit.INCHES);
+
+        demonstrateAddition(5.0, Length.LengthUnit.FEET, -2.0, Length.LengthUnit.FEET);
     }
 }

@@ -33,7 +33,12 @@ public class Length {
         this.value = value;
         this.unit = unit;
     }
-
+    public double getValue(){
+        return value;
+    }
+    public LengthUnit getUnit(){
+        return unit;
+    }
     // Convert to base unit (inches)
     private double convertToBaseUnit() {
         return this.value * this.unit.getConversionFactor();
@@ -46,6 +51,18 @@ public class Length {
         }
         double baseValue=convertToBaseUnit();
         return baseValue/targetUnit.getConversionFactor();
+    }
+    //Addition
+    public Length add(Length other){
+        if(other==null){
+            throw new IllegalArgumentException("Second operand cannot be null");
+        }
+        double thisBase=this.convertToBaseUnit();
+        double otherBase=other.convertToBaseUnit();
+
+        double sumBase=thisBase+otherBase;
+        double resultValue=sumBase/this.unit.getConversionFactor();
+        return new Length(resultValue,this.unit);
     }
     // Compare two Length objects
     public boolean compare(Length thatLength) {
@@ -67,6 +84,11 @@ public class Length {
     @Override
     public int hashCode() {
         return Double.hashCode(convertToBaseUnit());
+    }
+
+    @Override
+    public String toString() {
+        return "Quantity(" + value + ", " + unit + ")";
     }
 
     // Main for quick testing
