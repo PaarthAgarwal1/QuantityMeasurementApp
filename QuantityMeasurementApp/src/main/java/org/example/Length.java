@@ -64,6 +64,22 @@ public class Length {
         double resultValue=sumBase/this.unit.getConversionFactor();
         return new Length(resultValue,this.unit);
     }
+    //Addition with explicit target unit
+    public Length add(Length other,LengthUnit targetUnit){
+        if(other==null){
+            throw new IllegalArgumentException("Second operand cannot be null");
+        }
+        if(targetUnit==null){
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+        double sumbase=addInBaseUnit(other);
+        double resultValue=sumbase/targetUnit.getConversionFactor();
+        return new Length(resultValue,targetUnit);
+    }
+    // Private utility method (DRY principle)
+    private double addInBaseUnit(Length other) {
+        return this.convertToBaseUnit() + other.convertToBaseUnit();
+    }
     // Compare two Length objects
     public boolean compare(Length thatLength) {
         if (thatLength == null)
