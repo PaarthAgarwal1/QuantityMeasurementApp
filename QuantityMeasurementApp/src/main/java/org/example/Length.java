@@ -24,6 +24,12 @@ public class Length {
 
     // Constructor
     public Length(double value, LengthUnit unit) {
+        if(!Double.isFinite(value)){
+            throw new IllegalArgumentException("Invalid numeric value");
+        }
+        if(unit==null){
+            throw new IllegalArgumentException("Unit cannot be null");
+        }
         this.value = value;
         this.unit = unit;
     }
@@ -33,6 +39,14 @@ public class Length {
         return this.value * this.unit.getConversionFactor();
     }
 
+    //Convert to another unit
+    public double convertTo(LengthUnit targetUnit){
+        if(targetUnit==null){
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+        double baseValue=convertToBaseUnit();
+        return baseValue/targetUnit.getConversionFactor();
+    }
     // Compare two Length objects
     public boolean compare(Length thatLength) {
         if (thatLength == null)
