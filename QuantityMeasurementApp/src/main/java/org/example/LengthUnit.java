@@ -1,25 +1,36 @@
 package org.example;
 
-public enum LengthUnit {
+public enum LengthUnit implements IMeasurable {
 
     FEET(1.0),
     INCHES(1.0 / 12.0),
     YARDS(3.0),
     CENTIMETERS(0.0328084);
 
-    private final double toFeetFactor;
+    private final double conversionFactor;
 
-    LengthUnit(double toFeetFactor) {
-        this.toFeetFactor = toFeetFactor;
+    LengthUnit(double conversionFactor) {
+        this.conversionFactor = conversionFactor;
     }
 
+    @Override
+    public double getConversionFactor(){
+        return conversionFactor;
+    }
     // Convert value in this unit → base unit (feet)
+    @Override
     public double convertToBaseUnit(double value) {
-        return value * toFeetFactor;
+        return value * conversionFactor;
     }
 
     // Convert value from base unit (feet) → this unit
+    @Override
     public double convertFromBaseUnit(double baseValue) {
-        return baseValue / toFeetFactor;
+        return baseValue / conversionFactor;
+    }
+
+    @Override
+    public String getUnitName(){
+        return name();
     }
 }

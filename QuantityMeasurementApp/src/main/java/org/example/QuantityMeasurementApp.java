@@ -2,57 +2,38 @@ package org.example;
 
 public class QuantityMeasurementApp {
 
-    public static boolean demonstrateLengthEquality(Length length1, Length length2) {
-        return length1.equals(length2);
+    public static <U extends IMeasurable> void demonstrateEquality(Quantity<U> q1, Quantity<U> q2) {
+        System.out.println(q1 + " equals " + q2 + " → " + q1.equals(q2));
     }
-    public static void demonstrateLengthComparison(double value1,LengthUnit unit1,double value2,LengthUnit unit2){
-        Length length1=new Length(value1,unit1);
-        Length length2=new Length(value2,unit2);
-        System.out.println(unit1+" and "+unit2+" comparison: "+length1.equals(length2));
-    }
-    public static double convert(double value,LengthUnit source,LengthUnit target){
-        if(!Double.isFinite(value)){
-            throw new IllegalArgumentException("Invalid numeric value");
-        }
-        if(source==null||target==null){
-            throw new IllegalArgumentException("Units cannot be null");
-        }
-        double baseValue=value*source.convertToBaseUnit(value);
-        return target.convertFromBaseUnit(baseValue);
-    }
-    public static void demonstrateLengthConversion(double value,LengthUnit from,LengthUnit to){
-        double result=convert(value,from,to);
-        System.out.println("convert(" + value + ", " + from + ", " + to + ") = " + result);
-    }
-    public static void demonstrateLengthAddition(double value1,LengthUnit unit1,double value2,LengthUnit unit2){
-        Length length1=new Length(value1,unit1);
-        Length length2=new Length(value2,unit2);
 
-        Length result=length1.add(length2);
-        System.out.println("add(" + length1 + ", " + length2 + ") = " + result);
+    public static <U extends IMeasurable> void demonstrateConversion(Quantity<U> q, U targetUnit) {
+        System.out.println(q + " → " + q.convertTo(targetUnit));
     }
-    public static void demonstrateLengthAddition(double value1,LengthUnit unit1,double value2,LengthUnit unit2,LengthUnit targetUnit){
-        Length length1=new Length(value1,unit1);
-        Length length2=new Length(value2,unit2);
 
-        Length result=length1.add(length2,targetUnit);
-        System.out.println("add(" + length1 + ", " + length2 + ", " + targetUnit + ") = " + result);
+    public static <U extends IMeasurable> void demonstrateAddition(Quantity<U> q1, Quantity<U> q2, U targetUnit) {
+        System.out.println(q1 + " + " + q2 + " → " + q1.add(q2, targetUnit));
     }
+
     public static void main(String[] args) {
-        demonstrateLengthAddition(1.0, LengthUnit.FEET, 12.0, LengthUnit.INCHES, LengthUnit.FEET);
 
-        demonstrateLengthAddition(1.0, LengthUnit.FEET, 12.0, LengthUnit.INCHES, LengthUnit.INCHES);
+        // Length
+        Quantity<LengthUnit> l1 = new Quantity<>(1.0, LengthUnit.FEET);
+        Quantity<LengthUnit> l2 = new Quantity<>(12.0, LengthUnit.INCHES);
 
-        demonstrateLengthAddition(1.0, LengthUnit.FEET, 12.0, LengthUnit.INCHES, LengthUnit.YARDS);
+        demonstrateEquality(l1, l2);
 
-        demonstrateLengthAddition(1.0, LengthUnit.YARDS, 3.0, LengthUnit.FEET, LengthUnit.YARDS);
+        demonstrateConversion(l1, LengthUnit.INCHES);
 
-        demonstrateLengthAddition(36.0, LengthUnit.INCHES, 1.0, LengthUnit.YARDS, LengthUnit.FEET);
+        demonstrateAddition(l1, l2, LengthUnit.FEET);
 
-        demonstrateLengthAddition(2.54, LengthUnit.CENTIMETERS, 1.0, LengthUnit.INCHES, LengthUnit.CENTIMETERS);
+        // Weight
+        Quantity<WeightUnit> w1 = new Quantity<>(1.0, WeightUnit.KILOGRAM);
+        Quantity<WeightUnit> w2 = new Quantity<>(1000.0, WeightUnit.GRAM);
 
-        demonstrateLengthAddition(5.0, LengthUnit.FEET, 0.0, LengthUnit.INCHES, LengthUnit.YARDS);
+        demonstrateEquality(w1, w2);
 
-        demonstrateLengthAddition(5.0, LengthUnit.FEET, -2.0, LengthUnit.FEET, LengthUnit.INCHES);
+        demonstrateConversion(w1, WeightUnit.GRAM);
+
+        demonstrateAddition(w1, w2, WeightUnit.KILOGRAM);
     }
 }
