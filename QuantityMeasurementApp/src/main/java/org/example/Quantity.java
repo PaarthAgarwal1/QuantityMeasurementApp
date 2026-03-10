@@ -75,7 +75,7 @@ public class Quantity<U extends IMeasurable> {
         double thisBase = unit.convertToBaseUnit(value);
         double otherBase = other.unit.convertToBaseUnit(other.value);
 
-        return Double.compare(thisBase, otherBase) == 0;
+        return Math.abs(thisBase-otherBase)<0.000001;
     }
 
     @Override
