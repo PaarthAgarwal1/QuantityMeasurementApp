@@ -11,6 +11,8 @@ import com.app.QuantityMeasurementApp.repository.IQuantityMeasurementRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.app.QuantityMeasurementApp.entity.User;
 
 import java.util.List;
 
@@ -29,6 +31,13 @@ import java.util.List;
  */
 @Service
 public class QuantityMeasurementServiceImpl implements IQuantityMeasurementService {
+
+    private User getCurrentUser() {
+        return (User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+    }
 
     private static final Logger logger =
             LoggerFactory.getLogger(QuantityMeasurementServiceImpl.class);
@@ -85,25 +94,33 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
             String errorMessage) {
 
         QuantityMeasurementEntity e = new QuantityMeasurementEntity();
+
         if (m1 != null) {
             e.setThisValue(m1.getValue());
             e.setThisUnit(m1.getUnit().getUnitName());
             e.setThisMeasurementType(m1.getUnit().getMeasurementType());
         }
+
         if (m2 != null) {
             e.setThatValue(m2.getValue());
             e.setThatUnit(m2.getUnit().getUnitName());
             e.setThatMeasurementType(m2.getUnit().getMeasurementType());
         }
+
         if (resultModel != null) {
             e.setResultValue(resultModel.getValue());
             e.setResultUnit(resultModel.getUnit().getUnitName());
             e.setResultMeasurementType(resultModel.getUnit().getMeasurementType());
         }
+
         e.setOperation(operation);
         e.setResultString(resultString);
         e.setError(isError);
         e.setErrorMessage(errorMessage);
+
+        // 🔥 IMPORTANT: SET USER
+        e.setUser(getCurrentUser());
+
         return e;
     }
 
@@ -235,29 +252,47 @@ public class QuantityMeasurementServiceImpl implements IQuantityMeasurementServi
 
     @Override
     public List<QuantityMeasurementDTO> getAllMeasurements() {
-        return QuantityMeasurementDTO.fromEntityList(repository.findAll());
+        User user = getCurrentUser();
+
+        return QuantityMeasurementDTO.fromEntityList(
+                repository.findByUser(user)
+        );
     }
 
     @Override
     public List<QuantityMeasurementDTO> getMeasurementsByOperation(String operation) {
+        User user = getCurrentUser();
+
         return QuantityMeasurementDTO.fromEntityList(
-                repository.findByOperation(operation.toUpperCase()));
+                repository.findByUserAndOperation(user, operation.toUpperCase())
+        );
     }
 
     @Override
     public List<QuantityMeasurementDTO> getMeasurementsByType(String measurementType) {
+        User user = getCurrentUser();
+
         return QuantityMeasurementDTO.fromEntityList(
-                repository.findByThisMeasurementType(measurementType));
+                repository.findByUserAndThisMeasurementType(user, measurementType)
+        );
     }
 
     @Override
     public List<QuantityMeasurementDTO> getErrorHistory() {
+        User user = getCurrentUser();
+
         return QuantityMeasurementDTO.fromEntityList(
-                repository.findByIsError(true));
+                repository.findByUserAndIsError(user, true)
+        );
     }
 
     @Override
     public long getOperationCount(String operation) {
-        return repository.countByOperationAndIsErrorFalse(operation.toUpperCase());
+        User user = getCurrentUser();
+
+        return repository.countByUserAndOperationAndIsErrorFalse(
+                user,
+                operation.toUpperCase()
+        );
     }
 }

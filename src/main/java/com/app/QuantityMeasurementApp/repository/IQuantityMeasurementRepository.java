@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import com.app.QuantityMeasurementApp.entity.User;
 
 import java.util.List;
 
@@ -17,18 +18,18 @@ import java.util.List;
 public interface IQuantityMeasurementRepository
         extends JpaRepository<QuantityMeasurementEntity, Long> {
 
-    /** All records for a given operation type (COMPARE, ADD, etc.) */
-    List<QuantityMeasurementEntity> findByOperation(String operation);
+    // ✅ ALL DATA (USER-SPECIFIC)
+    List<QuantityMeasurementEntity> findByUser(User user);
 
-    /** All records for a given measurement type (LengthUnit, WeightUnit, etc.) */
-    List<QuantityMeasurementEntity> findByThisMeasurementType(String type);
+    // ✅ FILTERS WITH USER
+    List<QuantityMeasurementEntity> findByUserAndOperation(User user, String operation);
 
-    /** All error records */
-    List<QuantityMeasurementEntity> findByIsError(boolean isError);
+    List<QuantityMeasurementEntity> findByUserAndThisMeasurementType(User user, String measurementType);
 
-    /** Count successful records for a given operation */
-    long countByOperationAndIsErrorFalse(String operation);
+    List<QuantityMeasurementEntity> findByUserAndIsError(User user, boolean isError);
 
+    // ✅ COUNT WITH USER
+    long countByUserAndOperationAndIsErrorFalse(User user, String operation);
     /** Custom JPQL: successful records for a given operation */
     @Query("SELECT e FROM QuantityMeasurementEntity e " +
             "WHERE e.operation = :operation AND e.isError = false " +

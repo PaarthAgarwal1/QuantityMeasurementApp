@@ -29,7 +29,7 @@ public class Config {
                 .cors(cors->cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**","/swagger-ui/**","/v3/api-docs/**").permitAll()
+                        .requestMatchers("/auth/**","/swagger-ui/**","/v3/api-docs/**","h2-console").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
@@ -49,7 +49,7 @@ public class Config {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:4200")); // Angular
+        config.setAllowedOrigins(List.of("http://localhost:5173")); // React
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*")); // IMPORTANT for Authorization header
         config.setAllowCredentials(true);

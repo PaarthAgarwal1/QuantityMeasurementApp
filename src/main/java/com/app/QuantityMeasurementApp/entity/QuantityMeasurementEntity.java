@@ -1,6 +1,7 @@
 package com.app.QuantityMeasurementApp.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -14,9 +15,11 @@ import java.util.Objects;
                 @Index(name = "idx_operation",        columnList = "operation"),
                 @Index(name = "idx_measurement_type", columnList = "thisMeasurementType"),
                 @Index(name = "idx_created_at",       columnList = "createdAt"),
-                @Index(name = "idx_is_error",         columnList = "isError")
+                @Index(name = "idx_is_error",         columnList = "isError"),
+                @Index(name = "idx_user", columnList = "user_id")
         }
 )
+@Data
 public class QuantityMeasurementEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,6 +53,10 @@ public class QuantityMeasurementEntity implements Serializable {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @PrePersist
     protected void onCreate() {
