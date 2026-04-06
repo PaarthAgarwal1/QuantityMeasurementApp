@@ -49,7 +49,7 @@ public class Config {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:5173")); // React
+        config.setAllowedOrigins(List.of("http://localhost:5173","https://yourquantitymeasurmentapp.netlify.app/")); // React
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*")); // IMPORTANT for Authorization header
         config.setAllowCredentials(true);

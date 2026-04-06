@@ -1,14 +1,20 @@
-# Use OpenJDK 17 as the base image
-FROM eclipse-temurin:17-jdk-jammy
+# Build stage
+FROM maven:3.9.9-eclipse-temurin-17 AS build
+WORKDIR /workspace
 
-# Set the working directory
+# Copy Maven configuration and source code
+COPY pom.xml .
+COPY src ./src
+
+# Package the application without running tests
+RUN mvn -B -DskipTests package
+
+# Run stage
+FROM eclipse-temurin:17-jdk-jammy
 WORKDIR /app
 
-# Copy the JAR file from the target directory
-COPY target/QuantityMeasurementApp-0.0.1-SNAPSHOT.jar app.jar
+# Copy the built JAR from the build stage
+COPY --from=build /workspace/target/QuantityMeasurementApp-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the port the app runs on (default Spring Boot port)
 EXPOSE 8080
-
-# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
