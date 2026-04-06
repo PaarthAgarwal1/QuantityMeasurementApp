@@ -29,7 +29,7 @@ public class Config {
                 .cors(cors->cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**","/swagger-ui/**","/v3/api-docs/**","h2-console").permitAll()
+                        .requestMatchers("/auth/**","/swagger-ui/**","/v3/api-docs/**","/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
